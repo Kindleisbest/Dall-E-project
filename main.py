@@ -3,15 +3,6 @@ from openai import OpenAI
 import os 
 import requests
 
-
-
-
-
-
-
-
-
-
 my_secret = os.environ['Key'] 
 app = Flask(__name__) # sets up the app routes
 client = OpenAI(api_key= "sk-proj-a5wdJlvsikdxaXuppqSzT3BlbkFJPNwDmZ2xr0pJ0rsb2SLe") #Sets the API key
