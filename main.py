@@ -3,9 +3,9 @@ from openai import OpenAI
 import os 
 import requests
 
-my_secret = os.environ['Key'] 
+ 
 app = Flask(__name__) # sets up the app routes
-client = OpenAI(api_key= "sk-proj-a5wdJlvsikdxaXuppqSzT3BlbkFJPNwDmZ2xr0pJ0rsb2SLe") #Sets the API key
+client = OpenAI(api_key= "Change this to an actual key") #Sets the API key
 api_key = os.getenv('OPENAI_API_KEY') #Uses the API key sevice so we can equal it to a key
 app.secret_key = "nonsense"
 
@@ -60,4 +60,4 @@ def makeImage():
 
 
 if __name__ == '__main__':
-    app.run(host ='0.0.0.0', port=81, debug=True) # makes the website run
+    app.run(host ='0.0.0.0', port=3001, debug=True) # makes the website run
