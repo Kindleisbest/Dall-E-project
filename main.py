@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_from_directory, session
 from openai import OpenAI
 import os 
 import requests
+from replit import db
 
  
 app = Flask(__name__) # sets up the app routes
@@ -17,8 +18,39 @@ def favicon():
 
 @app.route('/')
 def index():
-  session["picture"] = ""
+  
   return render_template("index.html")#creates the home page
+
+@app.route('/loggingin', methods=["POST", "GET"])
+def loggin():
+  session["Username"] = ""
+  if request.method == "POST":
+    Username = request.form["Username"]
+    session["Username"] = Username
+    if Username in db:
+      session["Password"] = ""
+      if request.method == "POST":
+        Password = request.form["Password"]
+        session["Password"] = Password
+        if Password in db:
+          return render_template("home.html")
+        else:
+          return("Incorrect Password")
+    else:
+      return("Incorrect Username")
+  
+    # db[Username] = username_text
+  
+
+@app.route('/signup', methods=["POST", "GET"])
+def signups():
+
+  return render_template("signup.html")
+
+@app.route('/homepage')
+def login():
+  session["picture"] = ""
+  return render_template("home.html")#creates the home page
 
 @app.route("/index", methods=["POST", "GET"])
 def reset():

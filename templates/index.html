@@ -1,34 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-
-
-
-
-<!-- our home page -->
 <br><br><br><br><br>
-
-<h1>Imagirator</h1>
-
-
-<h2>Minimalistic web app powered by DALL-E, designed to generate images based on the user input.</h2>
-
-<!-- asks the user for the image that they want to see and brings it as a form.request to back-end-->
+<h1>Login</h1>
 <center>
-<form action="/generateImage" method="post" style="max-width: 500px; padding: 20px; border-radius: 500px;">
-  <h4>Your Prompt For Image</h4>
-
-  <input type="text" name="imagePrompt" placeholder="Enter Prompt Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;">
-
+<form action="/loggingin" method="post" style="max-width: 500px; padding: 20px; border-radius: 500px;">
+  <h5>Username</h5>
+  <input type="text" name="username" placeholder="Enter Username Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;">
   <br><br>
+  <h5>Password</h5>
+  <input type="password" name="password" placeholder="Enter Password Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;">
+  <br><br>
+  <form action="/loggingin", method="POST">
+       <div class="button-container">
+      <button class="button" type="submit" value="Login" name="Login">
+        <span style="color: #FFFFFF;">Login</span>
+      </button>
+    </div>
+    </form>
 
-<!-- button to generate image -->
-  <form action="/generateImage", method="POST">
-    <div class="button-container">
-    <button class="button" type="submit" value="generateImage" name="generateImage">
-      <span style="color: #FFFFFF;">Generate</span>
-    </button>
-  </div>
-</form>
-</center>
+  <form action="/signup", method="POST">
+       <div class="button-container">
+      <button class="button" type="submit" value="Signup" name="Signup">
+        <span style="color: #FFFFFF;">Sign up</span>
+      </button>
+    </div>
+    </form>
+    </center>
+
+
 
 {% endblock %}
