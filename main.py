@@ -3,6 +3,9 @@ from openai import OpenAI
 import os 
 import requests
 from replit import db
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
  
 app = Flask(__name__) # sets up the app routes
@@ -26,18 +29,11 @@ def loggin():
   if request.method == "POST":
     Username = request.form["Username"]
     Password = request.form["Password"]
-    Create = request.form["Create"] 
+    Signup = request.form["Signup"]
 
-    session['Create'] = Create
+    session['Signup'] = Signups
     session["Username"] = Username
     session["Password"] = Password
-    
-    if session['Create'] == "Create":
-      if Username in db[Username]:
-        return("user exist")
-      else:
-        db[Username] = session["Username"] and session["Password"]
-        return("user created", render_template("index.html"))
     
     if Username in db:
       if Password == db[Username]:
@@ -54,8 +50,24 @@ def loggin():
 
 @app.route('/signup', methods=["POST", "GET"])
 def signups():
+  if request.method == "POST":
+    logging.debug(f"Received data: {request.form}")
+    username = request.form["Username"]
+    password = request.form["Password"]
+    signup = request.form["Signup"]
 
-  return render_template("signup.html")
+    session['Signup'] = signup  # Fixed variable name here
+    session["Username"] = username
+    session["Password"] = password
+
+    if signup == "Signup":
+      if username in db:
+        return "User exists", 400  # Return an error status
+      else:
+        db[username] = password  # Save the password correctly
+        return render_template("index.html")  # Return render directly after signup
+  return render_template("signup.html")  # Handle GET request to show signup form
+
 
 @app.route('/homepage')
 def login():
