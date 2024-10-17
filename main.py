@@ -23,21 +23,31 @@ def index():
 
 @app.route('/loggingin', methods=["POST", "GET"])
 def loggin():
-  session["Username"] = ""
   if request.method == "POST":
     Username = request.form["Username"]
+    Password = request.form["Password"]
+    Create = request.form["Create"] 
+
+    session['Create'] = Create
     session["Username"] = Username
+    session["Password"] = Password
+    
+    if session['Create'] == "Create":
+      if Username in db[Username]:
+        return("user exist")
+      else:
+        db[Username] = session["Username"] and session["Password"]
+        return("user created", render_template("index.html"))
+    
     if Username in db:
-      session["Password"] = ""
-      if request.method == "POST":
-        Password = request.form["Password"]
-        session["Password"] = Password
-        if Password in db:
-          return render_template("home.html")
-        else:
-          return("Incorrect Password")
+      if Password == db[Username]:
+        return render_template("home.html")
+      else:
+        return "Incorrect Password"
     else:
-      return("Incorrect Username")
+      return "Incorrect Username"
+
+  return render_template("index.html")
   
     # db[Username] = username_text
   

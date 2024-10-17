@@ -1,10 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
-
-
-
-
-<!-- our home page -->
 <br><br><br><br><br>
 <h1>Sign Up</h1>
+<center>
+<form action="/signup" method="post" style="max-width: 500px; padding: 20px; border-radius: 500px;">
+  <h5>Username</h5>
+  <input type="text" name="Username" placeholder="Enter Username Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;">
+  <br><br>
+  <h5>Password</h5>
+  <input type="password" name="Password" placeholder="Enter Password Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;">
+  <br><br>
+  
+  <form action="/signup", method="POST">
+       <div class="button-container">
+      <button class="button" type="submit" value="Create" name="Create">
+        <span style="color: #FFFFFF;">Create</span>
+      </button>
+    </div>
+    </form>
+  
+  <form action="/signup", method="POST">
+     <div class="button-container">
+    <button class="button" type="submit" value="Return to Login" name="Return to Login">
+      <span style="color: #FFFFFF;">Return to Login</span>
+    </button>
+  </div>
+  </form>
+  
+    </center>
+
+
+
 {% endblock %}
