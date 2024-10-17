@@ -3,37 +3,35 @@
 <br><br><br><br><br>
 <h1>Sign Up</h1>
 <center>
-<form action="/signup" method="post" style="max-width: 500px; padding: 20px; border-radius: 500px;">
+<form action="/signup" method="post" style="max-width: 500px; padding: 20px; border-radius: 10px; border: 1px solid #ccc;">
   <h5>Username</h5>
   <input type="text" name="Username" placeholder="Enter Username Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;" required>
   <br><br>
+  
   <h5>Password</h5>
   <input type="password" name="Password" placeholder="Enter Password Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;" required>
   <br><br>
+
   <h5>Confirm Password</h5>
-  <input type="password" name="Confirm Password" placeholder="confirm Password Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;" required>
+  <input type="password" name="ConfirmPassword" placeholder="Confirm Password Here" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;" required>
   <br><br>
-    <div>
-        <label for="AdminPassword">Admin Password:</label>
-        <input type="password" name="AdminPassword" required>
-    </div>
-       <div class="button-container">
-      <button class="button" type="submit" value="Create" name="Create">
-        <span style="color: #FFFFFF;">Create</span>
-      </button>
-    </div>
-    </form>
   
-  <form action="/signup", method="POST">
-     <div class="button-container">
-    <button class="button" type="submit" value="Return to Login" name="Return to Login">
-      <span style="color: #FFFFFF;">Return to Login</span>
+  <div>
+    <label for="AdminPassword">Admin Password:</label>
+    <input type="password" name="AdminPassword" placeholder="Enter Admin Password" style="width: 100%; padding: 10px; text-align: center; border: 1px solid #1c1c1c; border-radius: 10px;" required>
+  </div>
+  
+  <div class="button-container" style="margin-top: 20px;">
+    <button class="button" type="submit" name="Signup" value="Create">
+      <span style="color: #FFFFFF;">Create Account</span>
     </button>
   </div>
-  </form>
-  
-    </center>
+</form>
 
-
-
+<div class="button-container" style="margin-top: 20px;">
+  <a href="/login" class="button" style="text-decoration: none; color: #FFFFFF;">
+    <span>Return to Login</span>
+  </a>
+</div>
+</center>
 {% endblock %}

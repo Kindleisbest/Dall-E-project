@@ -52,35 +52,38 @@ def loggin():
 
 @app.route('/signup', methods=["POST", "GET"])
 def signups():
-  if request.method == "POST":
-    logging.debug(f"Received data: {request.form}")
-    username = request.form.get("Username")
-    password = request.form.get("Password")
-    admin_password = request.form.get("AdminPassword")
-    signup = request.form.get("Signup")
+    if request.method == "POST":
+      logging.debug(f"Received data: {request.form}")
+      username = request.form.get("Username")
+      password = request.form.get("Password")
+      admin_password = request.form.get("AdminPassword")
+      signup = request.form.get("Signup")
 
-    session['Signup'] = signup
-    session["Username"] = username
+      # Store session data
+      session['Signup'] = signup
+      session["Username"] = username
 
-    # Define your admin password (this should ideally be stored securely)
-    correct_admin_password = "Ridge_Rules"
-    # Replace with your actual admin password
+      # Define your admin password (this should ideally be stored securely)
+      correct_admin_password = "Ridge_Rules"  # Replace with your actual admin password
 
-    if signup == "Signup":
+      if signup != "Signup":
+        return render_template("signup.html")  # Handle unexpected signup values
+
       if username in db:
         return render_template("signup.html", error="User already exists"), 400
 
-      if password is None or password.strip() == "":
-         return render_template("signup.html", error="Password is required"), 400
+      if not password or password.strip() == "":
+        return render_template("signup.html", error="Password is required"), 400
 
       if admin_password != correct_admin_password:
-         return render_template("signup.html", error="Invalid admin password"), 403
+        return render_template("signup.html", error="Invalid admin password"), 403
 
       hashed_password = generate_password_hash(password)
       db[username] = hashed_password
       return redirect("/")  # Redirect to a home page after signup
 
     return render_template("signup.html")  # Handle GET request to show signup form
+
 
 @app.route('/homepage')
 def login():
@@ -95,8 +98,7 @@ def reset():
     prompt=session["picture"],
     size="1024x1024",
     quality="standard",
-    n=1,
-  )# it takes the prompt and the image model dalle and generate an image through dalle and displays it on the website
+    n=1,)# it takes the prompt and the image model dalle and generate an image through dalle and displays it on the website
 
     print(response.data[0].url)
     return render_template("generateImage.html", response=response)
