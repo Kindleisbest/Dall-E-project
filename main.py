@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, send_from_directory, session
+from flask import Flask, render_template, request, send_from_directory, session, redirect
 from openai import OpenAI
 import os 
 import requests
 from replit import db
 import logging
+from werkzeug.security import generate_password_hash, check_password_hash
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -12,6 +13,7 @@ app = Flask(__name__) # sets up the app routes
 client = OpenAI(api_key= "Change this to an actual key") #Sets the API key
 api_key = os.getenv('OPENAI_API_KEY') #Uses the API key sevice so we can equal it to a key
 app.secret_key = "nonsense"
+db = {}
 
 
 
@@ -52,22 +54,33 @@ def loggin():
 def signups():
   if request.method == "POST":
     logging.debug(f"Received data: {request.form}")
-    username = request.form["Username"]
-    password = request.form["Password"]
-    signup = request.form["Signup"]
+    username = request.form.get("Username")
+    password = request.form.get("Password")
+    admin_password = request.form.get("AdminPassword")
+    signup = request.form.get("Signup")
 
-    session['Signup'] = signup  # Fixed variable name here
+    session['Signup'] = signup
     session["Username"] = username
-    session["Password"] = password
+
+    # Define your admin password (this should ideally be stored securely)
+    correct_admin_password = "Ridge_Rules"
+    # Replace with your actual admin password
 
     if signup == "Signup":
       if username in db:
-        return "User exists", 400  # Return an error status
-      else:
-        db[username] = password  # Save the password correctly
-        return render_template("index.html")  # Return render directly after signup
-  return render_template("signup.html")  # Handle GET request to show signup form
+        return render_template("signup.html", error="User already exists"), 400
 
+      if password is None or password.strip() == "":
+         return render_template("signup.html", error="Password is required"), 400
+
+      if admin_password != correct_admin_password:
+         return render_template("signup.html", error="Invalid admin password"), 403
+
+      hashed_password = generate_password_hash(password)
+      db[username] = hashed_password
+      return redirect("/")  # Redirect to a home page after signup
+
+    return render_template("signup.html")  # Handle GET request to show signup form
 
 @app.route('/homepage')
 def login():
