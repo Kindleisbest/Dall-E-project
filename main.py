@@ -82,7 +82,7 @@ def signups():
       db[username] = hashed_password
       return redirect("/")  # Redirect to a home page after signup
 
-    return render_template("signup.html")  # Handle GET request to show signup form
+    return render_template("home.html")  # Handle GET request to show signup form
 
 
 @app.route('/homepage')
