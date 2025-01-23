@@ -2,9 +2,9 @@ from flask import Flask, render_template, request, send_from_directory, session,
 from openai import OpenAI
 import os 
 import requests
-from replit import db
-import logging
-from werkzeug.security import generate_password_hash, check_password_hash
+from replit import db #For login
+import logging #For login
+from werkzeug.security import generate_password_hash, check_password_hash #For login
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -24,71 +24,73 @@ def favicon():
 @app.route('/')
 def index():
   
-  return render_template("index.html")#creates the home page
+  return render_template("home.html")#Change to index.html
+  #creates the home page
 
-@app.route('/loggingin', methods=["POST", "GET"])
-def loggin():
-  if request.method == "POST":
-    Username = request.form["Username"]
-    Password = request.form["Password"]
-    Signup = request.form["Signup"]
+# @app.route('/loggingin', methods=["POST", "GET"])
+# def loggin():
+#   if request.method == "POST":
+#     Username = request.form["Username"]
+#     Password = request.form["Password"]
+#     Signup = request.form["Signup"]
 
-    session['Signup'] = Signups
-    session["Username"] = Username
-    session["Password"] = Password
+#     session['Signup'] = Signups
+#     session["Username"] = Username
+#     session["Password"] = Password
     
-    if Username in db:
-      if Password == db[Username]:
-        return render_template("home.html")
-      else:
-        return "Incorrect Password"
-    else:
-      return "Incorrect Username"
+#     if Username in db:
+#       if Password == db[Username]:
+#         return render_template("home.html")
+#       else:
+#         return "Incorrect Password"
+#     else:
+#       return "Incorrect Username"
 
-  return render_template("index.html")
+#   return render_template("index.html")
   
-    # db[Username] = username_text
+#     # db[Username] = username_text
   
 
-@app.route('/signup', methods=["POST", "GET"])
-def signups():
-    if request.method == "POST":
-      logging.debug(f"Received data: {request.form}")
-      username = request.form.get("Username")
-      password = request.form.get("Password")
-      admin_password = request.form.get("AdminPassword")
-      signup = request.form.get("Signup")
+# @app.route('/signup', methods=["POST", "GET"])
+# def signups():
+#     if request.method == "POST":
+#       logging.debug(f"Received data: {request.form}")
+#       username = request.form.get("Username")
+#       password = request.form.get("Password")
+#       admin_password = request.form.get("AdminPassword")
+#       signup = request.form.get("Signup")
 
       # Store session data
-      session['Signup'] = signup
-      session["Username"] = username
+      # session['Signup'] = signup
+      # session["Username"] = username
 
       # Define your admin password (this should ideally be stored securely)
-      correct_admin_password = "Ridge_Rules"  # Replace with your actual admin password
+     # correct_admin_password = "Ridge_Rules"  # Replace with your actual admin password
 
-      if signup != "Signup":
-        return render_template("signup.html")  # Handle unexpected signup values
+    #  if signup != "Signup":
+     #   return render_template("signup.html")  # Handle unexpected signup values
 
-      if username in db:
-        return render_template("signup.html", error="User already exists"), 400
+    #   if username in db:
+    #     return render_template("signup.html", error="User already exists"), 400
 
-      if not password or password.strip() == "":
-        return render_template("signup.html", error="Password is required"), 400
+    #   if not password or password.strip() == "":
+    #     return render_template("signup.html", error="Password is required"), 400
 
-      if admin_password != correct_admin_password:
-        return render_template("signup.html", error="Invalid admin password"), 403
+    #   if admin_password != correct_admin_password:
+    #     return render_template("signup.html", error="Invalid admin password"), 403
 
-      hashed_password = generate_password_hash(password)
-      db[username] = hashed_password
-      return redirect("/")  # Redirect to a home page after signup
+    #   hashed_password = generate_password_hash(password)
+    #   db[username] = hashed_password
+    #   return redirect("/")  # Redirect to a home page after signup
 
-    return render_template("home.html")  # Handle GET request to show signup form
+    # return render_template("home.html")  # Handle GET request to show signup form
 
 
 @app.route('/homepage')
 def login():
   session["picture"] = ""
-  return render_template("home.html")#creates the home page
+  return render_template("home.html")
+  #creates the home page
 
 @app.route("/index", methods=["POST", "GET"])
 def reset():
