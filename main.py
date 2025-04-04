@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_from_directory, session, redirect
-from openai import OpenAI
+from openai import OpenAI, BadRequestError
 import os 
 import requests
 from replit import db #For login
@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 
  
 app = Flask(__name__) # sets up the app routes
-client = OpenAI(api_key= "Change this to an actual key") #Sets the API key
+client = OpenAI(api_key= "") #Sets the API key
 api_key = os.getenv('OPENAI_API_KEY') #Uses the API key sevice so we can equal it to a key
 app.secret_key = "nonsense"
 db = {}
@@ -107,7 +107,7 @@ def reset():
 
 @app.route("/home", methods=["POST", "GET"])
 def home():
-  return render_template("index.html")
+  return render_template("home.html")
 
 
 @app.route('/generateImage', methods=["POST", "GET"])
@@ -115,20 +115,36 @@ def makeImage():
     if request.method == "POST":
         prompt = request.form["imagePrompt"]
         session["picture"] = prompt
-        prompt_text = f"Generate an image based on the prompt: {prompt}"
-    response = client.images.generate(
-      model="dall-e-3",
-      prompt=request.form["imagePrompt"],
-      size="1024x1024",
-      quality="standard",
-      n=1,
-    )# it takes the prompt and the image model dalle and generate an image through dalle and displays it on the website
 
-    print(response.data[0].url)
-    return render_template("generateImage.html", response=response) # It passes the variabes for in to be used as jinja in the html to display the image
+        try:
+            response = client.images.generate(
+                model="dall-e-3",
+                prompt=prompt,
+                size="1024x1024",
+                quality="standard",
+                n=1,
+            )
+
+            if not response.data or not response.data[0].url:
+                error_message = "No image returned. Please try a different prompt."
+                return render_template("generateImage.html", error=error_message)
+
+            image_url = response.data[0].url
+            return render_template("generateImage.html", response=image_url)
+
+        except BadRequestError as e:
+            # Handle OpenAI policy violations or bad requests
+            error_message = e.response.get("error", {}).get("message", "Bad request.")
+            return render_template("generateImage.html", error=f"OpenAI Error: {error_message}")
+
+        except Exception as e:
+            # Catch-all for any other exceptions
+            return render_template("generateImage.html", error="An unexpected error occurred.")
+
+    return render_template("generateImage.html")
 
 
 
 
 if __name__ == '__main__':
-    app.run(host ='0.0.0.0', port=3001, debug=True) # makes the website run
+    app.run(host ='0.0.0.0', port=3001) # makes the website run
